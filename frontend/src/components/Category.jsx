@@ -7,15 +7,26 @@ const Category = ({type,val,setval}) => {
     if(val === 0)return ;
     setval(val-1);
   }
+ const Text =({colour,txt})=>{
+    if(colour === "easy"){
+      return (<span className="text-easy capitalize"> {txt} </span>);
+    }
+    if (colour === "hard") {
+      return <span className="text-hard capitalize"> {txt} </span>;
+    }
+    if (colour === "medium") {
+      return <span className="text-medium capitalize"> {txt} </span>;
+    }
+  }
   return (
     <div>
       <div className="flex items-center">
-        <div class="h-[3rem] w-[16rem] m-1 flex justify-between items-center rounded-md bg-dark">
+        <div className="h-[3rem] w-[16rem] m-1 flex justify-between items-center rounded-md bg-dark">
           <button
             className="h-[3rem] w-[3rem] rounded-md  flex justify-center items-center rounded-r-none btn hover:bg-darkest border-0"
             onClick={handledecrease}>
             <svg
-              class="w-4 h-4 text-gray-900 dark:text-white"
+              className="w-4 h-4 text-gray-900 dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -29,12 +40,12 @@ const Category = ({type,val,setval}) => {
               />
             </svg>
           </button>
-          <span className={`text-${type} capitalize`}>{type}</span>
+          <Text txt = {type} colour={type}/>
           <button
             className="h-[3rem] w-[3rem] rounded-md  flex justify-center items-center rounded-l-none btn hover:bg-darkest border-0"
             onClick={handleincrease}>
             <svg
-              class="w-4 h-4 text-gray-900 dark:text-white"
+              className="w-4 h-4 text-gray-900 dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -50,7 +61,7 @@ const Category = ({type,val,setval}) => {
           </button>
         </div>
         <div className="ml-4 flex justify-center items-center rounded-full border h-[3rem] w-[3rem] bg-darkest">
-          <span className={`text-${type}`}>{val}</span>
+          <Text colour={type} txt = {val}/>
         </div>
       </div>
     </div>

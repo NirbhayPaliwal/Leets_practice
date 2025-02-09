@@ -13,7 +13,7 @@ const [hard, sethard] = useState(0);
             <Category type = "easy" val = {easy} setval = {seteasy}/>
             <div className="flex items-center">
                 <Category type="medium" val = {medium} setval={setmedium}/>
-                <button class="btn btn-wide ml-24 border-none bg-dark hover:bg-darkest" >
+                <button className="btn btn-wide ml-24 border-none bg-dark hover:bg-darkest" >
                      Build
                 </button>
             </div>
