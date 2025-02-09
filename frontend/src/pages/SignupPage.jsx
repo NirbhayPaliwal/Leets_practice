@@ -1,6 +1,8 @@
 import React, { use, useEffect, useState } from 'react'
 import LeetCodelogo from "../assets/LeetCodelogogray.png"
-const LoginPage = () => {
+import { axiosInstance } from '../lib/axios';
+const SignupPage = () => {
+  
   const [formData,setFormData] = useState({
     username : "",
     email : "",
@@ -13,7 +15,7 @@ const LoginPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" }); // Clear the error as the user types    
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
     Object.keys(formData).forEach((key) => {
@@ -23,12 +25,25 @@ const LoginPage = () => {
         } is required`;
       }
     });
+    if(formData["password"].length < 6){
+      validationErrors["password"] = "Password should be of at least 6 length"
+    }
     if (Object.keys(validationErrors).length > 0) {      
       setErrors(validationErrors);
     } else {
-      console.log("Form Data Submitted:", formData);
-      alert("Signup successful!");
-      // You can also send `formData` to the backend via fetch or axios here
+      const {data} = await axiosInstance.post("/auth/signup",formData);
+      if(data.message){
+        alert(data.message);
+        return ;
+      }
+      if (data.ok === 0) {
+        for (e in data.errors) {
+          validationErrors[e] = data.errors[e];
+        }
+        setErrors(validationErrors);
+      } else {
+        alert("Signup Succesful");
+      }
     }
   };
   return (
@@ -152,4 +167,4 @@ const LoginPage = () => {
   );
 }
 
-export default LoginPage
+export default SignupPage
