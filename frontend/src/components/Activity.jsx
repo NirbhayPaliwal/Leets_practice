@@ -8,11 +8,11 @@ const Activity = () => {
   useEffect(()=>{       
     setloading(true);
     const fetchSubmissions = async()=>{
-      const d = axiosInstance.get('/friends/submission');
+      const d = await axiosInstance.get('/friend/allsubmissions');
       setUserSubmission(d.data);
       setloading(false);
     }
-    fetchSubmissions()
+    fetchSubmissions();
   },[])
   return (
     <section>
@@ -31,11 +31,13 @@ const Activity = () => {
                 </tr>
               </thead>
               {loading ? (
-                 <tr>
+                <tbody>
+                  <tr>
                     <td colSpan="5" className="text-center">
                       <Loading />
                     </td>
                   </tr>
+                </tbody>
               ) : (
                 <tbody>
                   {UserSubmission.map((submission, index) => (
@@ -43,7 +45,7 @@ const Activity = () => {
                       className={`${index % 2 ? "bg-darker" : "bg-dark"}`}
                       key={index}>
                       <td>
-                        <a href="/">Nirbhay Paliwal</a>
+                        <a href="/">{submission.username}</a>
                       </td>
                       <td>{submission.title}</td>
                       <td>{submission.timestamp}</td>

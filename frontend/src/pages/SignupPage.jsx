@@ -1,15 +1,15 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import LeetCodelogo from "../assets/LeetCodelogogray.png"
 import { axiosInstance } from '../lib/axios';
+import { useNavigate } from 'react-router-dom';
 const SignupPage = () => {
-  
+  const navigate = useNavigate();
   const [formData,setFormData] = useState({
     username : "",
     email : "",
     password : "",
     leetcodeusername : ""
   });
-  const [ht,setht] = useState(0)
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,13 +36,16 @@ const SignupPage = () => {
         alert(data.message);
         return ;
       }
-      if (data.ok === 0) {
+      if (!data.ok) {
         for (e in data.errors) {
           validationErrors[e] = data.errors[e];
         }
         setErrors(validationErrors);
       } else {
+        const t = await axiosInstance.get(`/friend/add/${formData["leetcodeusername"]}`);
+        console.log(t);
         alert("Signup Succesful");
+        navigate('/');
       }
     }
   };

@@ -1,3 +1,4 @@
--- loading page may be
 -- one page between the contest and actual page for changing name
 -- make profile icon a drop down for logout and profile view page
+-- add spinner to every possible places
+-- make link clickable of submissions

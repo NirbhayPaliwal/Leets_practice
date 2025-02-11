@@ -1,5 +1,6 @@
 import user from "../models/userSchema.js"
 import bcrypt from 'bcrypt';
+import LeetCode from "leetcode-query";
 import { generateToken } from "../lib/utils.js";
 const login = async (req,res)=>{
     try{
@@ -39,10 +40,20 @@ const login = async (req,res)=>{
 };
 const signup = async (req,res)=>{
     try{
+        const leetcode = new LeetCode();
         const { username, email, password, leetcodeusername } = req.body;
         const exists = await user.findOne({
             username,
         });
+        const rest = leetcode.user(leetcodeusername);
+        if((await rest).matchedUser == null){
+            res.send({
+                ok : 0 ,
+                errors : {
+                    leetcodeusername : "No Such Leetcode User exists"
+                }
+            })
+        }
         if (exists) {
             res.send({
                 ok : 0,
@@ -62,7 +73,7 @@ const signup = async (req,res)=>{
                 leetcodeusername,
             });
             generateToken(newuser._id,res);
-            newuser.save();
+            await newuser.save();
             res.send({
                 ok : 1,
             });

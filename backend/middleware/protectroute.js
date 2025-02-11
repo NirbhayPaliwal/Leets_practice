@@ -12,12 +12,13 @@ const checktoken = async (req,res,next)=>{
         if(w){
             userId = w.userId;            
         }
-
         if (userId) {
             const result = await user.findById(userId);
             if(result)
                 req.user = result.username;
         }
+        if(!req.user){  res.send({ok : 0 , message : "Internal server error"}); return ;}
+        
         next();        
     }    
     catch(err){

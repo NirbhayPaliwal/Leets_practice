@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema({
 });
 userSchema.pre("save",async function(next){
    try{
-      const obj = new friendslist({});
+      const t = this.leetcodeusername;
+      const obj = new friendslist();
       const w = await obj.save();
       this.friends = obj._id;
       next();
