@@ -1,27 +1,32 @@
 import { useState } from "react";
-
+import { axiosInstance } from "../lib/axios.js";
 const AddFriends = () => {
-  const [alertVisible, setAlertVisible] = useState(false);
+  const [alert, setAlert] = useState("");
   const [Username,setUsername] = useState("");
   const handleChange = (event) => {
     setUsername(event.target.value); 
   };
-  function handleclick(event){
+  async function handleclick(event){
     
     event.preventDefault(); 
-    setAlertVisible(1);
-    setUsername("");
+    const res = await axiosInstance.get(`/friend/add/${Username}`);
+    if(res.ok == 0){
+      alert("Internal Server Error");
+      return ;
+    }
+    setAlert(res.data.alertmessage);
+    if(res.data.alertmessage[0] != 'N') setUsername("");
         setTimeout(() => {
-          setAlertVisible(false); 
+          setAlert(""); 
         }, 1500);
   }
   return (
     <div>
-      {alertVisible && (
+      {alert && (
         <div
           role="alert"
           className={`alert alert-success w-[300px] fixed bottom-4 right-4 shadow-lg p-4 flex items-center gap-2 ${
-            alertVisible == 1 ? "bg-green-400" : "bg-red-400"
+            alert[0]!=='N' ? "bg-green-400" : "bg-red-400"
           }`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -32,11 +37,10 @@ const AddFriends = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d={`${alertVisible==1 ? "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" : "M6 18L18 6M6 6l12 12"}`}
+              d={`${alert[0] !=='N' ? "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" : "M6 18L18 6M6 6l12 12"}`}
             />
           </svg>
-          {alertVisible == 1 && <span>User added successfully!</span>}
-          {alertVisible == 2 && <span>User not found</span>}
+          <span>{alert}</span>
         </div>
       )}
       <div className="dropdown dropdown-bottom dropdown-end">

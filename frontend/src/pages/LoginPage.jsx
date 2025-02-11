@@ -1,49 +1,51 @@
 import React from 'react'
 import { useState } from 'react';
 import { axiosInstance } from "../lib/axios";
+import { useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
-const [formData,setFormData] = useState({
-username : "",
-password : "",
-});
-const [errors, setErrors] = useState({});
-const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // Clear the error as the user types    
-}
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validationErrors = {};
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        validationErrors[key] = `${
-          key.charAt(0).toUpperCase() + key.slice(1)
-        } is required`;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {      
-      setErrors(validationErrors);
-    } else {
-      const {data} = await axiosInstance.post('/auth/login',formData);
-      if(data.ok){
-        
-      }
-      else{
-        if(data.message || !(data.errors)){
-          alert(data.message);
+  const navigate = useNavigate()
+  const [formData,setFormData] = useState({
+    username : "",
+    password : "",
+  });
+  const [errors, setErrors] = useState({});
+  const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setErrors({ ...errors, [e.target.name]: "" }); // Clear the error as the user types    
+  }
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      const validationErrors = {};
+      Object.keys(formData).forEach((key) => {
+        if (!formData[key]) {
+          validationErrors[key] = `${
+            key.charAt(0).toUpperCase() + key.slice(1)
+          } is required`;
+        }
+      });
+      if (Object.keys(validationErrors).length > 0) {      
+        setErrors(validationErrors);
+      } else {
+        const {data} = await axiosInstance.post('/auth/login',formData);
+        if(data.ok){
+          navigate("/");
         }
         else{
-          for(e in data.errors){
-            console.log(e);
-            console.log(data.errors[e]);
-             validationErrors[e] = data.errors[e];
+          if(data.message || !(data.errors)){
+            alert(data.message);
           }
-          setErrors(validationErrors);
+          else{
+            for(e in data.errors){
+              console.log(e);
+              console.log(data.errors[e]);
+              validationErrors[e] = data.errors[e];
+            }
+            setErrors(validationErrors);
+          }
         }
       }
-    }
-};
-    
+  };
   return (
     <div>
       <form onSubmit={handleSubmit}>

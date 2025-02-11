@@ -1,6 +1,19 @@
-import UserSubmission from './submission.jsx'
 import AddFriends from './AddFriends.jsx'
+import Loading from './LoadingActivity.jsx';
+import { useState ,useEffect} from 'react';
+import { axiosInstance } from '../lib/axios.js';
 const Activity = () => {
+  const [loading, setloading] = useState(true);
+  const [UserSubmission, setUserSubmission] = useState(null);
+  useEffect(()=>{       
+    setloading(true);
+    const fetchSubmissions = async()=>{
+      const d = axiosInstance.get('/friends/submission');
+      setUserSubmission(d.data);
+      setloading(false);
+    }
+    fetchSubmissions()
+  },[])
   return (
     <section>
       <div className="flex justify-center mt-10">
@@ -17,21 +30,29 @@ const Activity = () => {
                   <td>Language</td>
                 </tr>
               </thead>
-              <tbody>
-                {UserSubmission.map((submission, index) => (
-                  <tr
-                    className={`${index % 2 ? "bg-darker" : "bg-dark"}`}
-                    key={index}>
-                    <td>
-                      <a href="/">Nirbhay Paliwal</a>
+              {loading ? (
+                 <tr>
+                    <td colSpan="5" className="text-center">
+                      <Loading />
                     </td>
-                    <td>{submission.title}</td>
-                    <td>{submission.timestamp}</td>
-                    <td>{submission.statusDisplay}</td>
-                    <td>{submission.lang}</td>
                   </tr>
-                ))}
-              </tbody>
+              ) : (
+                <tbody>
+                  {UserSubmission.map((submission, index) => (
+                    <tr
+                      className={`${index % 2 ? "bg-darker" : "bg-dark"}`}
+                      key={index}>
+                      <td>
+                        <a href="/">Nirbhay Paliwal</a>
+                      </td>
+                      <td>{submission.title}</td>
+                      <td>{submission.timestamp}</td>
+                      <td>{submission.statusDisplay}</td>
+                      <td>{submission.lang}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           </div>
         </div>

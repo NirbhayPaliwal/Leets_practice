@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import user from "../models/userSchema.js"
 import bcrypt from 'bcrypt';
 import { generateToken } from "../lib/utils.js";
@@ -74,4 +73,12 @@ const signup = async (req,res)=>{
         res.send({ok : 0 , message : "Internal Server Error"});
     }
 }
-export {login,signup};
+const checkauth = (req,res)=>{
+    try{
+        res.send({user : req.user});
+    }catch(err){
+        console.log(err);   
+        res.send({ok : 0 , message : "Internal Server Error"});
+    }
+}
+export {login,signup,checkauth};

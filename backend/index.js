@@ -3,6 +3,8 @@ import authRoutes from './routes/auth.routes.js'
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { configDotenv } from 'dotenv';
+import cookieParser from 'cookie-parser';
+import friendsroutes from './routes/friends.routes.js';
 configDotenv();
 const app = express();
 app.listen(5000,()=>{
@@ -17,8 +19,10 @@ app.use(
     credentials: true, //  Allow cookies/auth headers
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use('/auth',authRoutes);
+app.use('/friend',friendsroutes);
 app.get("/" , (req,res)=>{
     console.log(req.body);
     res.send("cool");

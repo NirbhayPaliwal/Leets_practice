@@ -1,5 +1,7 @@
 import profile from "../assets/profile.jpg"
-const Navbar = () => {
+
+const Navbar =  () => {
+
   return (
     <section>
       <nav>
