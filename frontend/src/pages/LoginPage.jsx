@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate()
+  const [loading,setloading] = useState(false);
   const [formData,setFormData] = useState({
     username : "",
     password : "",
@@ -15,6 +16,7 @@ const LoginPage = () => {
       setErrors({ ...errors, [e.target.name]: "" }); // Clear the error as the user types    
   }
   const handleSubmit = async (e) => {
+      setloading(true);
       e.preventDefault();
       const validationErrors = {};
       Object.keys(formData).forEach((key) => {
@@ -45,6 +47,7 @@ const LoginPage = () => {
           }
         }
       }
+            setloading(false);
   };
   return (
     <div>
@@ -105,7 +108,12 @@ const LoginPage = () => {
               </div>
               <div className="flex justify-center">
                 <button className="btn bg-darker min-h-0 h-[43px] hover:bg-darker w-[200px] border-0 m-1">
-                  Login
+                  {!loading && <>Login</>}
+                  {loading && (
+                    <>
+                      <div className="h-[22px] w-[22px] border-black border-2 border-t-white rounded-full animate-spin"></div>
+                    </>
+                  )}
                 </button>
               </div>
               <a

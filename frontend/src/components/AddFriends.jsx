@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { axiosInstance } from "../lib/axios.js";
 const AddFriends = () => {
   const [alert, setAlert] = useState("");
   const [Username,setUsername] = useState("");
+  const [loading,setloading] = useState(false);
   const handleChange = (event) => {
     setUsername(event.target.value); 
   };
   async function handleclick(event){
-    
+    setloading(true)
     event.preventDefault(); 
     const res = await axiosInstance.get(`/friend/add/${Username}`);
     if(res.ok == 0){
       alert("Internal Server Error");
       return ;
     }
+    setloading(false);
     setAlert(res.data.alertmessage);
     if(res.data.alertmessage[0] != 'N') setUsername("");
         setTimeout(() => {
@@ -26,7 +28,7 @@ const AddFriends = () => {
         <div
           role="alert"
           className={`alert alert-success w-[300px] fixed bottom-4 right-4 shadow-lg p-4 flex items-center gap-2 ${
-            alert[0]!=='N' ? "bg-green-400" : "bg-red-400"
+            alert[0] !== "N" ? "bg-green-400" : "bg-red-400"
           }`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +39,11 @@ const AddFriends = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d={`${alert[0] !=='N' ? "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" : "M6 18L18 6M6 6l12 12"}`}
+              d={`${
+                alert[0] !== "N"
+                  ? "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  : "M6 18L18 6M6 6l12 12"
+              }`}
             />
           </svg>
           <span>{alert}</span>
@@ -60,7 +66,7 @@ const AddFriends = () => {
               <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                   <svg
-                    className ="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -85,9 +91,16 @@ const AddFriends = () => {
                 />
                 <button
                   type="submit"
-                  className="text-white absolute end-2.5 bottom-2.5 bg-darker hover:bg-darkest px-4 py-2 btn btn-sm border-0 text-center"
+                  className="text-white absolute end-2.5 bottom-2.5 bg-darker hover:bg-darkest px-4 py-2 btn btn-sm border-0 text-center "
                   onClick={handleclick}>
-                  Add
+                  <div className="h-[20px] w-[30px] flex justify-center items-center">
+                    {!loading && <>Add</>}
+                    {loading && (
+                      <>
+                        <div className="h-[15px] w-[15px] border-2 border-darkest border-t-white animate-spin rounded-full"></div>
+                      </>
+                    )}
+                  </div>
                 </button>
               </div>
             </form>

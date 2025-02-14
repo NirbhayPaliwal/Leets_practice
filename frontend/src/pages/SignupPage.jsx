@@ -4,6 +4,7 @@ import { axiosInstance } from '../lib/axios';
 import { useNavigate } from 'react-router-dom';
 const SignupPage = () => {
   const navigate = useNavigate();
+  const [loading,setloading] = useState(false);
   const [formData,setFormData] = useState({
     username : "",
     email : "",
@@ -17,6 +18,7 @@ const SignupPage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true)
     const validationErrors = {};
     Object.keys(formData).forEach((key) => {
       if (!formData[key]) {
@@ -48,6 +50,7 @@ const SignupPage = () => {
         navigate('/');
       }
     }
+    setloading(false);
   };
   return (
     <div className="flex justify-center items-start h-[700px]">
@@ -152,11 +155,18 @@ const SignupPage = () => {
               )}
             </div>
             <div className="flex justify-center">
-              <button className="btn bg-darker min-h-0 h-[43px] hover:bg-darker w-[200px] border-0 m-1">
-                Signup
+              <button className="btn bg-darker min-h-0 h-[43px] hover:bg-darker w-[200px] border-0 m-1 flex justify-center items-center ">
+                {!loading && <>Signup</>}
+                {loading && 
+                    <>
+                      <div className='h-[22px] w-[22px] border-black border-2 border-t-white rounded-full animate-spin'>
+
+                      </div>
+                    </>
+                }
               </button>
             </div>
-            <div className='h-[40px]'>
+            <div className="h-[40px]">
               <a
                 className="flex justify-end text-sm text-blue-400 "
                 href="/login">
