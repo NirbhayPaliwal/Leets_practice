@@ -4,7 +4,7 @@ const checktoken = async (req,res,next)=>{
     try{
         const token = req.cookies.jwt;
         if(!token){
-            next();
+            res.send({ ok: 0, message: "Internal server error" });
             return ;
         }
         const w =  jwt.verify(token, process.env.JWT_SECRET);
@@ -17,8 +17,7 @@ const checktoken = async (req,res,next)=>{
             if(result)
                 req.user = result.username;
         }
-        if(!req.user){  res.send({ok : 0 , message : "Internal server error"}); return ;}
-        
+        if(!req.user){  res.send({ok : 0 , message : "Internal server error"}); return ;}        
         next();        
     }    
     catch(err){

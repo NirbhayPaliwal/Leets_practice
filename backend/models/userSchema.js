@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import friendslist from "./friendlistSchema.js";
+import problems from "./problemsSchema.js";
+import data from "../data.js"
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -19,18 +21,29 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  friends:
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "friendslist",
-    },
+  friends: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "friendslist",
+  },
+  problems: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "problems",
+  },
 });
 userSchema.pre("save",async function(next){
    try{
       const t = this.leetcodeusername;
       const obj = new friendslist();
-      const w = await obj.save();
+      await obj.save();
+      const p = new problems();
+      for(let a of data){
+        if(a.difficulty == 'Hard') p.hard.push(a.questionFrontendId);
+        if (a.difficulty == "Easy") p.easy.push(a.questionFrontendId);
+        if (a.difficulty == "Medium") p.medium.push(a.questionFrontendId);
+      }
+      await p.save();
       this.friends = obj._id;
+      this.problems = p._id;
       next();
    }
    catch(err){

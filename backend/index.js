@@ -5,6 +5,8 @@ import cors from 'cors';
 import { configDotenv } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import friendsroutes from './routes/friends.routes.js';
+import problemsroutes from './routes/problems.routes.js';
+import contestroutes from './routes/contest.routes.js'
 configDotenv();
 const app = express();
 app.listen(5000,()=>{
@@ -23,6 +25,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/auth',authRoutes);
 app.use('/friend',friendsroutes);
+app.use('/problems',problemsroutes);
+app.use('/contest', contestroutes);
 app.get("/" , (req,res)=>{
     console.log(req.body);
     res.send("cool");

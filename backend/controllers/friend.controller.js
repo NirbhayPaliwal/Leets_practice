@@ -36,13 +36,25 @@ const addfriend = async (req,res)=>{
 
 }
 const getfriendfunc = async(user)=>{
-    const result =await ((await User.findOne({username : user})).populate("friends"));
-    const list = result.friends.list;
-    return list;
+    try{
+            const result =await ((await User.findOne({username : user})).populate("friends"));
+        const list = result.friends.list;
+        return list;
+    }
+    catch(err){
+        console.log(err);       
+    }
 }
 const getfriend = async(req,res)=>{
-    const list = await getfriendfunc(req.user);
-    res.send({list});
+    try{
+        if(!req.user)return res.send({list : ""});
+        const list = await getfriendfunc(req.user);
+        res.send({list});
+    }
+    catch(err){
+        console.log(err);
+    }
+    
 }
 const getsunmissionsfunc = async(user)=>{
     const LC = new LeetCode();

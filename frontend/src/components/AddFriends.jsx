@@ -8,6 +8,7 @@ const AddFriends = () => {
     setUsername(event.target.value); 
   };
   async function handleclick(event){
+    if(!Username) return ;
     setloading(true)
     event.preventDefault(); 
     const res = await axiosInstance.get(`/friend/add/${Username}`);
@@ -50,7 +51,7 @@ const AddFriends = () => {
         </div>
       )}
       <div className="dropdown dropdown-bottom dropdown-end">
-        <div tabIndex={0} role="button" className="btn">
+        <div tabIndex={0} role="button" className="btn dropdown-toggle">
           Add Friends
         </div>
         <ul

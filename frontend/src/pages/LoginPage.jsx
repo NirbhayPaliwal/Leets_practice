@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "../components/Navbar.jsx";
 const LoginPage = () => {
   const navigate = useNavigate()
   const [loading,setloading] = useState(false);
@@ -51,6 +51,7 @@ const LoginPage = () => {
   };
   return (
     <div>
+      <Navbar />
       <form onSubmit={handleSubmit}>
         <div className="flex justify-center items-center h-[600px] transition-all">
           <div className="h-auto min-h-[400px] w-[450px] flex flex-col items-center justify-center bg-darkest rounded-md pt-10">
@@ -111,7 +112,7 @@ const LoginPage = () => {
                   {!loading && <>Login</>}
                   {loading && (
                     <>
-                      <div className="h-[22px] w-[22px] border-black border-2 border-t-white rounded-full animate-spin"></div>
+                      <div className="h-[19px] w-[19px] border-black border-2 border-t-white rounded-full animate-spin"></div>
                     </>
                   )}
                 </button>

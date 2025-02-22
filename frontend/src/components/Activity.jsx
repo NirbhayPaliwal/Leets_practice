@@ -2,6 +2,8 @@ import AddFriends from './AddFriends.jsx'
 import Loading from './LoadingActivity.jsx';
 import { useState ,useEffect} from 'react';
 import { axiosInstance } from '../lib/axios.js';
+const problemLink = "https://leetcode.com/problems/";
+const profileLink = "https://leetcode.com/u/";
 const Activity = () => {
   const [loading, setloading] = useState(true);
   const [UserSubmission, setUserSubmission] = useState(null);
@@ -45,9 +47,19 @@ const Activity = () => {
                       className={`${index % 2 ? "bg-darker" : "bg-dark"}`}
                       key={index}>
                       <td>
-                        <a href="/">{submission.username}</a>
+                        <a
+                          href={profileLink + submission.username}
+                          className="underline underline-offset-2">
+                          {submission.username}
+                        </a>
                       </td>
-                      <td>{submission.title}</td>
+                      <td>
+                        <a
+                          href={problemLink + submission.titleSlug}
+                          className="underline underline-offset-2 ">
+                          {submission.title}
+                        </a>
+                      </td>
                       <td>{submission.timestamp}</td>
                       <td>{submission.statusDisplay}</td>
                       <td>{submission.lang}</td>

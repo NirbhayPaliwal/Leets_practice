@@ -92,4 +92,14 @@ const checkauth = (req,res)=>{
         res.send({ok : 0 , message : "Internal Server Error"});
     }
 }
-export {login,signup,checkauth};
+const logout = async(req,res)=>{
+    try{
+        res.cookie("jwt", "", { maxAge: 0 });
+        return res.send({ok : 1});
+    }
+    catch(err){
+        console.log(err);
+        res.send({ok : 0 , message : "Internal Server Error" });
+    }
+}
+export {login,signup,checkauth,logout};
