@@ -12,8 +12,11 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "axios": "^1.7.9",
+    "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.4.2",
+    "install": "^0.13.0",
+    "npm": "^11.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5"

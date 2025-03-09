@@ -1,0 +1,12 @@
+{
+  "name": "leet",
+  "version": "1.0.0",
+  "description": "A website for making leetcode practice more competitive and personalized with time bound contest practice.",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install concurrently npm install --prefix frontend && npm install --prefix backend",
+    "start": "npx concurrently \"cd backend && nodemon index.js\" \"cd frontend && npm run dev\""
+  },
+  "author": "",
+  "license": "ISC"
+}
