@@ -38,6 +38,7 @@ const getcontest = async(req,res)=>{
               const p = {
                 titleSlug: problem.titleSlug,
                 difficulty: problem.difficulty,
+                title : problem.title
               };
               pb.push(p);
             }

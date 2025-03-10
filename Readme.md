@@ -26,13 +26,35 @@ A website for making LeetCode practice more competitive and personalized with ti
    cd Leet
    ```
 
-2. **Install dependencies**:  
+2. **Set up environment variables**:  
+
+   Create `.env` files for both the backend and frontend.  
+
+   ### 📌 Backend `.env` File (Located in the backend folder)  
+
+   ```env
+   DB_LINK=<your_mongodb_connection_string>
+   NODE_ENV=Development
+   JWT_SECRET=<your_secret_key>
+   ```
+
+   ### 📌 Frontend `.env` File (Located in the frontend folder)  
+
+   ```env
+   VITE_BACKEND_URI=http://localhost:5000
+   ```
+
+   ⚠️ **Important:**  
+   - Do **NOT** commit `.env` files to version control. Add them to `.gitignore`.  
+   - Replace placeholder values (`<your_mongodb_connection_string>` and `<your_secret_key>`) with actual credentials.  
+
+3. **Install dependencies**:  
 
    ```bash
    npm run install-all
    ```
 
-3. **Start the server**:  
+4. **Start the server**:  
 
    ```bash
    npm start

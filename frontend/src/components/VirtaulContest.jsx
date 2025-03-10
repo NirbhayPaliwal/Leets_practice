@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { use } from 'react'
 import { useState } from 'react';
 import Category from './Category';
+import { useNavigate } from 'react-router-dom';
+import { nav } from 'framer-motion/client';
 const VirtualContest = () => {
+const navigate = useNavigate();
 const [easy,seteasy] = useState(0);
 const [medium, setmedium] = useState(0);
 const [hard, sethard] = useState(0);
@@ -13,7 +16,8 @@ const [hard, sethard] = useState(0);
             <Category type = "easy" val = {easy} setval = {seteasy}/>
             <div className="flex items-center">
                 <Category type="medium" val = {medium} setval={setmedium}/>
-                <button className="btn btn-wide ml-24 border-none bg-dark hover:bg-darkest" >
+                <button className="btn btn-wide ml-24 border-none bg-dark hover:bg-darkest" 
+                  onClick={()=>navigate("/contest/0")}>
                      Build
                 </button>
             </div>

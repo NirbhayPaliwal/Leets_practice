@@ -56,14 +56,14 @@ const getfriend = async(req,res)=>{
     }
     
 }
-const getsunmissionsfunc = async(user)=>{
+const getsubmissionsfunc = async(user)=>{
     const LC = new LeetCode();
     const LCuser = await LC.user(user);
     return LCuser.recentSubmissionList;    
 }
 const getsubmissions = async(req,res)=>{
     const user = req.params.id;
-    const rest = await getsunmissionsfunc(user);
+    const rest = await getsubmissionsfunc(user);
     res.send(rest);
 }
 
@@ -73,7 +73,7 @@ const getallfriendsubms = async(req,res)=>{
     let list = await getfriendfunc(req.user);
     let result = [];
     for(const a of list){
-        let s = await getsunmissionsfunc(a);
+        let s = await getsubmissionsfunc(a);
         for (let el of s) {
           el.username = a; 
             result.push(el);
