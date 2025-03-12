@@ -18,7 +18,7 @@ const [hard, sethard] = useState(0);
             <Category type="medium" val={medium} setval={setmedium} />
             <button
               className="btn btn-wide ml-24 border-none bg-dark hover:bg-darkest"
-              onClick={() => navigate("/contest/67d11683185e6a4d305f1ce6")}>
+              onClick={() => navigate("/contest/67d1a60d90638e3d54240356")}>
               Build
             </button>
           </div>

@@ -89,8 +89,9 @@ const checksolved = async (participationId) => {
          console.log(titles)
          let intervalID = setInterval(async() => {
            const u = await leetcode.recent_submissions(lc);
-           for(let a of u){
-              // console.log(a.titleSlug)
+           const rev = u.reverse();
+           for(let a of rev){
+              console.log(a.titleSlug)
                 if(titles.has(a.titleSlug)){
                     if(a.statusDisplay == "Accepted"){
                         console.log("acctep")
@@ -101,13 +102,18 @@ const checksolved = async (participationId) => {
                           console.log("wrong");
                           pt.wrong_submissions.set(a.titleSlug, []);
                         }
-                        if(!pt.wrong_submissions.get(a.titleSlug).includes(a.timestamp)) 
+                        if(!pt.wrong_submissions.get(a.titleSlug).includes(a.timestamp)){
+                          console.log("wrong");
                             pt.wrong_submissions
                               .get(a.titleSlug)
                               .push(a.timestamp);
+                            console.log(pt.wrong_submissions)
+                        }
                     }
                 }
            }
+           pt.markModified("solved_problems");
+           pt.markModified("wrong_submissions");
            await pt.save();
          }, 1000 * 10);
          setTimeout(() => {
@@ -123,7 +129,7 @@ const getparticipation = async(req,res)=>{
   try{
       const user = req.user;
       const contestId = req.params.id;
-      const pt = await participation.findOne({user,contestId});
+      const pt = await participation.findOne({user,contestId}).lean();
       return res.send(pt)
   }
   catch(err){
