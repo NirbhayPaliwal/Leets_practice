@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx"
 import ProfilePage from "./pages/ProfilePage.jsx"
-import ContestPage from "./components/ContestPage.jsx";
+import ContestPage from "./pages/ContestPage.jsx";
 import {Routes , Route} from "react-router-dom"
 
 const App = () => {

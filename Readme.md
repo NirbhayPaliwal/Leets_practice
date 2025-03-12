@@ -5,7 +5,8 @@ A website for making LeetCode practice more competitive and personalized with ti
 ## ⭐ Features  
 
 - 🎯 **Create Personalized Contests** *(In Progress)*: Build custom contests by selecting problems based on difficulty.  
-  ![contest_image](Related%20stuff/contest.png)  
+  ![problem_select_image](Related%20stuff/problem_select.png)  
+  ![contest_image](Related%20stuff/contest.png)
 
 - 🏆 **Add Friends**: Add your friend's username to your friend list and track their activities. See your ranking among them.  
   ![home](Related%20stuff/Home.png)  

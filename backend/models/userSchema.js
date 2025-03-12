@@ -32,11 +32,11 @@ const userSchema = new mongoose.Schema({
 });
 userSchema.pre("save",async function(next){
    try{
-      const t = this.leetcodeusername;
       const obj = new friendslist();
       await obj.save();
       const p = new problems();
       for(let a of data){
+        if(a.isPaidOnly) continue;
         if(a.difficulty == 'Hard') p.hard.push(a.questionFrontendId);
         if (a.difficulty == "Easy") p.easy.push(a.questionFrontendId);
         if (a.difficulty == "Medium") p.medium.push(a.questionFrontendId);

@@ -11,7 +11,7 @@ const buildcontest = async(req,res)=>{
         const p = await getproblemsfunc(easy, medium, hard, username);
         const curr = new contest({duration});
         for (let a of p) {
-          curr.problems.push(a.questionFrontendId)
+          curr.problems.push(Number(a.questionFrontendId))
         }
         curr.save();
         return res.send({ id: curr._id });
@@ -26,6 +26,9 @@ const getcontest = async(req,res)=>{
     try{
         const pb = [];
         const contestId = req.params.id
+        if (!contestId.match(/^[0-9a-fA-F]{24}$/)) {
+          return res.status(400).send({ok:0});
+        }
         const user = req.user;
         const pt = await participation.findOne({
             user , contestId
@@ -34,7 +37,7 @@ const getcontest = async(req,res)=>{
           const currcontest = await contest.findById(contestId);
           if (currcontest) {
             for (let a of currcontest.problems) {
-              const problem = data[a];
+              const problem = data[a-1];
               const p = {
                 titleSlug: problem.titleSlug,
                 difficulty: problem.difficulty,
@@ -42,10 +45,10 @@ const getcontest = async(req,res)=>{
               };
               pb.push(p);
             }
-            return res.send({ problems: pb, startTime: pt.startTime, duration:currcontest.duration });
+            return res.send({ok : 1, problems: pb, startTime: pt.startTime, duration:currcontest.duration });
           }
         } 
-        return res.send({ partcipate: 0, message: "No such contest" });
+        return res.send({ ok : 0,partcipate: 0, message: "No such contest" });
     }
     catch(err){
         console.log("Error in Get Contest",err);
@@ -80,21 +83,22 @@ const checksolved = async (participationId) => {
          const currcontest = await contest.findById(pt.contestId);
          const lc = (await User.findOne({ username: pt.user })).leetcodeusername;  
          const titles = new Set();
-         const mp = new Map();
          for(let a of  currcontest.problems){
             titles.add(data[a-1].titleSlug);
-            mp.set(data[a-1].titleSlug,a);
          }
-         var cnt = 0;
+         console.log(titles)
          let intervalID = setInterval(async() => {
            const u = await leetcode.recent_submissions(lc);
            for(let a of u){
+              // console.log(a.titleSlug)
                 if(titles.has(a.titleSlug)){
                     if(a.statusDisplay == "Accepted"){
+                        console.log("acctep")
                         pt.solved_problems.set(a.titleSlug , new Date());
                         titles.delete(a.titleSlug);
                     }else{
                         if (!pt.wrong_submissions.has(a.titleSlug)) {
+                          console.log("wrong");
                           pt.wrong_submissions.set(a.titleSlug, []);
                         }
                         if(!pt.wrong_submissions.get(a.titleSlug).includes(a.timestamp)) 
@@ -105,14 +109,25 @@ const checksolved = async (participationId) => {
                 }
            }
            await pt.save();
-         }, 1000 * 5);
+         }, 1000 * 10);
          setTimeout(() => {
            clearInterval(intervalID);
            console.log("Interval stopped");
-         }, 1000 * 60 * 10);
+         }, 1000 * 60 * currcontest.duration);
     }   
     catch(err){
         console.log("Error in check solved" ,err);
     }
 };
-export {buildcontest,getcontest,participate,checksolved}
+const getparticipation = async(req,res)=>{
+  try{
+      const user = req.user;
+      const contestId = req.params.id;
+      const pt = await participation.findOne({user,contestId});
+      return res.send(pt)
+  }
+  catch(err){
+    console.log("Error in getparticipation ",err);
+  }
+}
+export {buildcontest,getcontest,participate,checksolved,getparticipation}
