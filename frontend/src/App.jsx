@@ -5,6 +5,8 @@ import SignupPage from "./pages/SignupPage.jsx"
 import ProfilePage from "./pages/ProfilePage.jsx"
 import ContestPage from "./pages/ContestPage.jsx";
 import {Routes , Route} from "react-router-dom"
+import ManageFriendsPage from "./pages/ManageFriendsPage.jsx";
+import EditPage from "./pages/EditPage.jsx";
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contest/:id" element={<ContestPage />} />
+        <Route path="/managefriends" element={<ManageFriendsPage />} />
+        {/* <Route path="/edit" element={<EditPage />} /> */}
       </Routes>
     </main>
   );

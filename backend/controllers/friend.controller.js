@@ -37,7 +37,7 @@ const addfriend = async (req,res)=>{
 }
 const getfriendfunc = async(user)=>{
     try{
-            const result =await ((await User.findOne({username : user})).populate("friends"));
+        const result =await ((await User.findOne({username : user})).populate("friends"));
         const list = result.friends.list;
         return list;
     }
@@ -94,5 +94,31 @@ const getallfriendsubms = async(req,res)=>{
     res.send(result);
     return ;
 }
+const removefriend = async (req, res) => {
+    try {
+        const user = req.user;
+        const toRemove = req.params.id;
+        const result = await User.findOne({ username: user });
+        const listid = result.friends;
 
-export {addfriend,getfriend,getsubmissions ,getallfriendsubms}
+        const exists = await friendslist.findOne({
+            _id: listid,
+            list: { $in: [toRemove] },
+        });
+        if (!exists) {
+            res.send({ ok: 1});
+            return;
+        }
+        await friendslist.findOneAndUpdate(
+            { _id: listid },
+            { $pull: { list: toRemove } }
+        );
+        res.send({ ok: 1, alertmessage: "User Removed!" });
+    } catch (err) {
+        console.log(err);
+        res.send({ok: 0, message: "Internal Server Error" });
+    }
+}
+
+
+export {addfriend,getfriend,getsubmissions ,getallfriendsubms, removefriend}

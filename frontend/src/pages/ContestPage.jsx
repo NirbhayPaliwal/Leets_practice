@@ -38,7 +38,6 @@ const ContestPage = () => {
         String(item.titleSlug)
       )
     ) {
-      console.log("HEY");
       style = "bg-green-500 border-t-2 hover:text-black cursor-pointer";
     }
     return (
