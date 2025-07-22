@@ -8,13 +8,17 @@ const buildcontest = async(req,res)=>{
     try{
         const { easy, medium, hard, duration } = req.body;
         const username = req.user;
+        // Get the current count of contests
+        const contestCount = await contest.countDocuments();
+        const numericId = contestCount + 1;
         const p = await getproblemsfunc(easy, medium, hard, username);
-        const curr = new contest({duration});
+        // Create contest with duration and numericId
+        const curr = new contest({duration, name: `Contest-${numericId}`});
         for (let a of p) {
           curr.problems.push(Number(a.questionFrontendId))
         }
-        curr.save();
-        return res.send({ id: curr._id });
+        await curr.save();
+        return res.send({ ok : 1,id: curr._id });
     }
     catch(err){
         console.log("Problem in contest controller" , err);
@@ -45,7 +49,7 @@ const getcontest = async(req,res)=>{
               };
               pb.push(p);
             }
-            return res.send({ok : 1, problems: pb, startTime: pt.startTime, duration:currcontest.duration });
+            return res.send({ok : 1, name : currcontest.name, problems: pb, startTime: pt.startTime, duration:currcontest.duration });
           }
         } 
         return res.send({ ok : 0,partcipate: 0, message: "No such contest" });
@@ -86,28 +90,23 @@ const checksolved = async (participationId) => {
          for(let a of  currcontest.problems){
             titles.add(data[a-1].titleSlug);
          }
-         console.log(titles)
+        //  console.log(titles)
          let intervalID = setInterval(async() => {
            const u = await leetcode.recent_submissions(lc);
            const rev = u.reverse();
            for(let a of rev){
-              console.log(a.titleSlug)
                 if(titles.has(a.titleSlug)){
                     if(a.statusDisplay == "Accepted"){
-                        console.log("acctep")
                         pt.solved_problems.set(a.titleSlug , new Date());
                         titles.delete(a.titleSlug);
                     }else{
                         if (!pt.wrong_submissions.has(a.titleSlug)) {
-                          console.log("wrong");
                           pt.wrong_submissions.set(a.titleSlug, []);
                         }
                         if(!pt.wrong_submissions.get(a.titleSlug).includes(a.timestamp)){
-                          console.log("wrong");
                             pt.wrong_submissions
                               .get(a.titleSlug)
                               .push(a.timestamp);
-                            console.log(pt.wrong_submissions)
                         }
                     }
                 }
@@ -136,4 +135,28 @@ const getparticipation = async(req,res)=>{
     console.log("Error in getparticipation ",err);
   }
 }
-export {buildcontest,getcontest,participate,checksolved,getparticipation}
+
+const getcontestdetails = async(req,res)=>{
+  try{
+    const contestId = req.params.id;
+    let ct = await contest.findById(contestId);
+   if (!ct) {
+      return res.send({ ok: 0, message: "Contest not found" });
+    }
+    let easy = 0 , medium = 0, hard = 0;
+    for(const problem of ct.problems){
+      const problemData = data[problem - 1];
+      if(problemData.difficulty === "Easy") easy++;
+      else if(problemData.difficulty === "Medium") medium++;
+      else if(problemData.difficulty === "Hard") hard++;  
+    }
+    const duration = ct.duration;
+    const required = {easy, medium, hard, duration};
+    return res.send({ok:1 , contest:required});
+  }
+  catch(err){
+    console.log("Error in getcontestdetails ",err);
+  }
+}
+
+export {buildcontest,getcontest,participate,checksolved,getparticipation,getcontestdetails}
