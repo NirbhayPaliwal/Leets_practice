@@ -3,6 +3,7 @@ import Category from './Category';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { axiosInstance } from '../lib/axios';
 
 const VirtualContest = () => {
   const navigate = useNavigate();
@@ -10,39 +11,26 @@ const VirtualContest = () => {
   const [medium, setmedium] = useState(0);
   const [hard, sethard] = useState(0);
   const [duration, setDuration] = useState(0); 
-  const [contestName, setContestName] = useState("");
 
 
-  const handleBuildContest = () => {
+  const handleBuildContest = async() => {
     
-    if (easy + medium + hard === 0 || duration <= 0 || contestName=="") {
+    if (easy + medium + hard === 0 || duration <= 0) {
       toast.error("Please select questions and a valid duration");
       return;
     }
 
-    const contestConfig = {
-      contestName,
-      easy,
-      medium,
-      hard,
-      duration,
-      startTime: new Date().toISOString(),
-      endTime: new Date(Date.now() + duration * 60000).toISOString()
-    };
-    localStorage.setItem("currentContest", JSON.stringify(contestConfig));
+    const {data} = await axiosInstance.post('/contest/build',{easy,medium,hard,duration} );
+    if (data.ok) {
 
-    toast.success("Contest has been prepared!");
-    
+      navigate(`/participate/${data.id}`);
 
-  //   setTimeout(() => {
-  //     navigate("/contest/67d1a60d90638e3d54240356");
-  //   }, 1500);
-  // };
-
-  setTimeout(() => {
-      const contestId = "67d1a60d90638e3d54240356"; // you can later generate dynamic IDs
-navigate(`/participatepage`);
-    }, 1500);
+    } else {
+      toast.error("Failed to create contest. Please try again.", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -55,16 +43,6 @@ navigate(`/participatepage`);
 
           <div className="flex items-center justify-between">
             <Category type="medium" val={medium} setval={setmedium} />
-            <div className="flex items-center space-x-2">
-    <label className="text-md font-medium whitespace-nowrap">Contest Name:</label>
-    <input
-      type="text"
-      placeholder="Enter contest name"
-      className="input input-bordered w-40"
-      value={contestName}
-      onChange={(e) => setContestName(e.target.value)}
-    />
-  </div>
             <div className="flex items-center space-x-2">
               <label className="text-md font-medium whitespace-nowrap">Duration (min):</label>
               <input

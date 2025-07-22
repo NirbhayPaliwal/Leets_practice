@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from '../lib/axios';
 import Loading from '../components/Loading.jsx'
 const link = "https://leetcode.com/problems/";
-//67cd7afb3fd2fc0a1cf503ae
+
 const Text = ({ colour, txt }) => {
   if (colour === "Easy") {
     return <span className="text-easy capitalize"> {txt} </span>;
@@ -23,6 +23,7 @@ const ContestPage = () => {
   const [loading,setloading] = useState(true); 
   const [Time, setTime] = useState(0);
   const [participation,setparticipation] = useState({});
+  const [contestName, setContestName] = useState("");
   let called = 0;
   const { id } = useParams();
 
@@ -91,6 +92,7 @@ const ContestPage = () => {
           if(data2){
                 contest = data;
                 setparticipation(data2);
+                setContestName(data.name);
                 setloading(false);
                 handletimer();
                 handlesubmissions();
@@ -111,7 +113,7 @@ const ContestPage = () => {
       <div className="flex justify-center m-12">
         <div>
           <div className="flex justify-between mb-0">
-            <div className="text-[1.5rem]">Contest Name</div>
+            <div className="text-[1.5rem]">{contestName}</div>
             <div className="text-[1.3rem]  text-white self-end">
               {Time > 0 && (
                 <>

@@ -2,51 +2,60 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { axiosInstance } from "../lib/axios";
 const ParticipatePage = () => {
   const navigate = useNavigate();
-  const { contestId } = useParams();
+  const { id } = useParams();
+  console.log("Contest ID:", id);  
+  useEffect(() =>{
+      const fetchContestData = async () => {
+        const { data } = await axiosInstance.get(`/contest/getcontestdetails/${id}`);
+        console.log("Contest Data:", data);
+        if(data.ok){
+          setEasy(data.contest.easy);
+          setMedium(data.contest.medium);
+          setHard(data.contest.hard);
+          setDuration(data.contest.duration);
+        }
+        else {
+          toast.error("Contest not found or has ended.", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          // navigate("/");
+        }
+        
+      }
+      fetchContestData();
+  },[])
 
-  const savedContest = JSON.parse(localStorage.getItem("currentContest"));
-  const defaultDuration = savedContest
-    ? Math.floor(
-        (new Date(savedContest.endTime) - new Date(savedContest.startTime)) /
-          60000
-      )
-    : 10;
 
-  const [contestName, setContestName] = useState(
-    savedContest?.contestName || "weekly-65"
-  );
-  const [easy, setEasy] = useState(savedContest?.easy);
-  const [medium, setMedium] = useState(savedContest?.medium);
-  const [hard, setHard] = useState(savedContest?.hard);
-  const [duration, setDuration] = useState(defaultDuration);
+  const [easy, setEasy] = useState(0);
+  const [medium, setMedium] = useState(0);
+  const [hard, setHard] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-  const handleStartContest = () => {
-    const start = new Date();
-    const end = new Date(start.getTime() + duration * 60000); // Convert minutes to ms
+  const handleStartContest = async() => {
+      const {data} = await axiosInstance.get(`/contest/participate/${id}`)
+      console.log("Start Contest Response:", data);
+      if(data.ok){
+        navigate(`/contest/${id}`);
+      }
+      else {
+        if(data.create == false) 
+          toast.error("Contest does not exist.", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        else{
+            toast.error("Failed to start contest. Please try again.", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
 
-    const contestData = {
-      id: contestId,
-      contestName,
-      startTime: start.toISOString(),
-      endTime: end.toISOString(),
-      easy,
-      medium,
-      hard,
-    };
-
-    localStorage.setItem("currentContest", JSON.stringify(contestData));
-
-    toast.success("Contest Started!", {
-      position: "top-center",
-      autoClose: 500,
-    });
-
-    setTimeout(() => {
-      navigate(`/participate/${contestId}`);
-    });
+        
+      }
   };
 
   return (
@@ -55,17 +64,7 @@ const ParticipatePage = () => {
       <h1 className="text-3xl font-bold mb-6">Prepare Contest</h1>
 
       <div className="w-full max-w-md bg-darkest p-6 rounded-xl shadow-lg space-y-4">
-        {/* Contest Name */}
-        <div>
-          <label className="block mb-1 text-sm">Contest Name:</label>
-          <input
-            type="text"
-            value={contestName}
-            readOnly
-            // onChange={(e) => setContestName(e.target.value)}
-            className="w-full p-2 rounded bg-dark text-white border border-gray-600 cursor-not-allowed"
-          />
-        </div>
+
 
         {/* Number of Questions */}
         <div>
