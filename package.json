@@ -8,5 +8,9 @@
     "start": "npx concurrently \"cd backend && nodemon index.js\" \"cd frontend && npm run dev\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-canvas-confetti": "^2.0.7",
+    "react-confetti": "^6.4.0"
+  }
 }

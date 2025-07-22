@@ -25,6 +25,7 @@ const ContestPage = () => {
   const [participation,setparticipation] = useState({});
   let called = 0;
   const { id } = useParams();
+
   const Problem = ({item})=>{
     let style = "border-t-2 hover:text-cyan-400 cursor-pointer";
     console.log(participation.solved_problems);
@@ -38,7 +39,6 @@ const ContestPage = () => {
         String(item.titleSlug)
       )
     ) {
-      console.log("HEY");
       style = "bg-green-500 border-t-2 hover:text-black cursor-pointer";
     }
     return (
@@ -55,6 +55,7 @@ const ContestPage = () => {
       </>
     );
   }
+  
   const handletimer = ()=> {
       const curr = Math.floor(
       (new Date() - new Date(contest.startTime)) / 1000

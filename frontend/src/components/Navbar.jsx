@@ -45,6 +45,14 @@ const Navbar = () => {
                       Profile
                     </a>
                   </li>
+                  <li className="border-t border-gray-500">
+                    <a
+                      className="text-white btn border-none flex justify-center rounded-sm hover:bg-dark text-lg font-light"
+                      href="/managefriends"
+                    >
+                      Manage Friends
+                    </a>
+                  </li>
                   <li className="border-t border-gray-500" onClick={logout}>
                     <a
                       className="text-white btn border-none flex justify-center rounded-sm hover:bg-dark text-lg font-light"

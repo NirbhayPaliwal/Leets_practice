@@ -42,6 +42,7 @@ const signup = async (req,res)=>{
     try{
         const leetcode = new LeetCode();
         const { username, email, password, leetcodeusername } = req.body;
+        console.log(username)
         const exists = await user.findOne({
             username,
         });
