@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosInstance } from "../lib/axios";
+import Navbar from "../components/Navbar.jsx";
 const ParticipatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -59,6 +60,8 @@ const ParticipatePage = () => {
   };
 
   return (
+    <div>
+      <Navbar/>
     <div className="flex flex-col items-center justify-center min-h-screen bg-darker text-white px-4">
       <ToastContainer />
       <h1 className="text-3xl font-bold mb-6">Prepare Contest</h1>
@@ -151,6 +154,7 @@ const ParticipatePage = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/contest/:id" element={<ContestPage />} />
         <Route path="/managefriends" element={<ManageFriendsPage />} />
        
-        <Route path="thankyou"element={<ThankYouPage />} />
+        <Route path="/thankyou"element={<ThankYouPage />} />
        
         <Route path="/participate/:id" element={<ParticipatePage />} />
         {/* <Route path="/participate/:id" element={<Participate />} /> */}

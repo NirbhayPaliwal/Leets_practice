@@ -16,7 +16,7 @@
     "dotenv": "^16.4.7",
     "framer-motion": "^12.4.2",
     "install": "^0.13.0",
-    "npm": "^11.4.2",
+    "npm": "^11.5.1",
     "react": "^19.0.0",
     "react-canvas-confetti": "^2.0.7",
     "react-confetti": "^6.4.0",
