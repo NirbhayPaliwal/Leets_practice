@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import ReactCanvasConfetti from "react-canvas-confetti";
 
+
 const ThankYouPage = () => {
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(true);
@@ -152,8 +153,11 @@ const ThankYouPage = () => {
           font-size: 1.5rem;
         }
       `}</style>
+      
     </div>
+   
   );
+  
 };
 
 export default ThankYouPage;
