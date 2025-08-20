@@ -9,7 +9,8 @@ import problemsroutes from './routes/problems.routes.js';
 import contestroutes from './routes/contest.routes.js'
 configDotenv();
 const app = express();
-app.listen(5000,()=>{
+const PORT = process.env.PORT || 5000;
+app.listen(PORT,()=>{
     console.log("Listening on PORT 5000");
 })
 mongoose.connect(process.env.DB_LINK).then(
