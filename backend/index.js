@@ -16,9 +16,14 @@ app.listen(PORT,()=>{
 mongoose.connect(process.env.DB_LINK).then(
     ()=>console.log("DataBase Connected")).catch((err)=>console.log(err)
 );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://leets-practice.vercel.app"
+];
 app.use(
   cors({
-    origin: "*", //  Allow only your frontend URL
+    origin: allowedOrigins, //  Allow only your frontend URL
     credentials: true, //  Allow cookies/auth headers
   })
 );
