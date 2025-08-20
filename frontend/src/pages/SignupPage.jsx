@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import LeetCodelogo from "../assets/Leetcodelogogray.png"
+import LeetCodelogo from "../assets/LeetcodeLogogray.png"
 import { axiosInstance } from '../lib/axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar.jsx";
