@@ -18,7 +18,7 @@ const Navbar = () => {
             className="flex items-center justify-center text-white text-2xl px-4"
             href="/">
             {" "}
-            Leet's
+            Leet's Practice
           </a>
           {!loading && user && (
             <div className="dropdown dropdown-end">

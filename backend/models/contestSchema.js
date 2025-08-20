@@ -10,10 +10,6 @@ const contestSchema = new mongoose.Schema({
   },
   name: {
     type: String
-  },
-  numericId: {
-    type: Number,
-    unique: true
   }
 
 });
