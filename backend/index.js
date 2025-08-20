@@ -18,7 +18,7 @@ mongoose.connect(process.env.DB_LINK).then(
 );
 app.use(
   cors({
-    origin: ["http://localhost:5173","http://localhost:5174"], //  Allow only your frontend URL
+    origin: ["https://leets-practice.vercel.app"], //  Allow only your frontend URL
     credentials: true, //  Allow cookies/auth headers
   })
 );
