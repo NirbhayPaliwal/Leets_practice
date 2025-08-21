@@ -9,6 +9,8 @@ const useAuth = () => {
     const fetchUser = async () => {
       try {
         const res = await axiosInstance.get("/auth/check");
+        console.log("User data:", res.data);
+        
         if (res.data.user) {
           setUser(res.data.user);
         }
